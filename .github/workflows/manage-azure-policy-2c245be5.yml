@@ -1,0 +1,32 @@
+name: manage-azure-policy-2c245be5
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Deploy_the_Windows_Guest_Configuration_extension_to_enable_Guest_Configuration_assignments_on_Windows_VMs_385f5831-96d4-41db-9a3c-cd3af78aaae6/**'
+#      - .github/workflows/manage-azure-policy-2c245be5.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_2c245be5}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Deploy_the_Windows_Guest_Configuration_extension_to_enable_Guest_Configuration_assignments_on_Windows_VMs_385f5831-96d4-41db-9a3c-cd3af78aaae6/**
