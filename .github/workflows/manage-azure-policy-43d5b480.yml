@@ -1,0 +1,32 @@
+name: manage-azure-policy-43d5b480
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/API_App_should_only_be_accessible_over_HTTPS_b7ddfbdc-1260-477d-91fd-98bd9be789a6/**'
+#      - .github/workflows/manage-azure-policy-43d5b480.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_43d5b480}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/API_App_should_only_be_accessible_over_HTTPS_b7ddfbdc-1260-477d-91fd-98bd9be789a6/**
