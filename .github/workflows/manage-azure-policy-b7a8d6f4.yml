@@ -1,0 +1,32 @@
+name: manage-azure-policy-b7a8d6f4
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Audit_Windows_machines_that_allow_re-use_of_the_previous_24_passwords_5b054a0d-39e2-4d53-bea3-9734cad2c69b/**'
+#      - .github/workflows/manage-azure-policy-b7a8d6f4.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_b7a8d6f4}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Audit_Windows_machines_that_allow_re-use_of_the_previous_24_passwords_5b054a0d-39e2-4d53-bea3-9734cad2c69b/**
