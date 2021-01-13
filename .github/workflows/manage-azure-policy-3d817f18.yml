@@ -1,0 +1,32 @@
+name: manage-azure-policy-3d817f18
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Add_system-assigned_managed_identity_to_enable_Guest_Configuration_assignments_on_virtual_machines_with_no_identities_3cf2ab00-13f1-4d0c-8971-2ac904541a7e/**'
+#      - .github/workflows/manage-azure-policy-3d817f18.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_3d817f18}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Add_system-assigned_managed_identity_to_enable_Guest_Configuration_assignments_on_virtual_machines_with_no_identities_3cf2ab00-13f1-4d0c-8971-2ac904541a7e/**
