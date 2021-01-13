@@ -1,0 +1,32 @@
+name: manage-azure-policy-bdfa07c9
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Vulnerabilities_in_security_configuration_on_your_machines_should_be_remediated_e1e5fd5d-3e4c-4ce1-8661-7d1873ae6b15/**'
+#      - .github/workflows/manage-azure-policy-bdfa07c9.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_bdfa07c9}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Vulnerabilities_in_security_configuration_on_your_machines_should_be_remediated_e1e5fd5d-3e4c-4ce1-8661-7d1873ae6b15/**
